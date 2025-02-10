@@ -1,0 +1,27 @@
+name: weather-station 
+services:
+    grafana:
+        container_name: grafana
+        ports:
+            - 3000:3000
+        image: grafana/grafana
+    questdb:
+        ports:
+            - 9000:9000
+            - 9009:9009
+            - 8812:8812
+            - 9003:9003
+        volumes:
+            - /host/volume/location:/var/lib/questdb
+        image: questdb/questdb:8.0.1
+    data_reader:
+        build:
+          context: ./data_reader
+          dockerfile: Dockerfile
+        environment:
+          QUESTDB_CONF: http::addr=questdb:9000;
+        depends_on:
+          - questdb
+        devices:
+          - "/dev/ttyACM0:/dev/ttyACM0"
+

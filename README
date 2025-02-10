@@ -1,0 +1,4 @@
+
+
+in order to read the process currenltly writing data to the db, use:
+ps ax | grep data_reader.py
